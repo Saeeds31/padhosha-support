@@ -180,7 +180,7 @@ onMounted(async () => {
     dashboard.value = data;
     if (!dashboard.value.active) {
         Swal.fire("متوجه شدم", "تاریخ پشتیبانی شما به انتها رسیده است لطفا برای استفاده مجدد از سیستم با پشتیبانی تماس بگیرید", "success");
-        // router.push('/login')
+        router.push('/login')
     }
 });
 function formatCurrency(value) {
