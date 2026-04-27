@@ -12,6 +12,9 @@
   font-family: "yekanbakhregular";
   src: url(../fonts/yekanBakh/regular.ttf);
 }
+.fy {
+  font-family: "yekanbakhbold";
+}
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -132,4 +135,77 @@ input.multiselect__input {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
   padding: 1rem !important;
+}
+.showInMobile {
+  display: none;
+}
+
+footer {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .showInMobile {
+    display: inline;
+  }
+  .sidebar {
+    display: none !important;
+  }
+
+  footer a:hover {
+    color: #0dcaf0;
+  }
+
+  footer a {
+    color: white;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    gap: 8px;
+    border-left: 1px solid white;
+    padding: 8px;
+    justify-content: center;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-content: space-between;
+    width: 100%;
+    background: black;
+    box-shadow: 0 0 6px #1213;
+    border-radius: 0 0 8px 8px;
+  }
+
+  div#mainContent {
+    margin-right: 0 !important;
+  }
+
+  .mainpage-container {
+    padding-bottom: 60px;
+  }
+
+  .tableBox .table-responsive td {
+    min-width: 130px;
+  }
+  thead {
+    display: none;
+  }
+  tr {
+    display: grid;
+  }
+  td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card {
+    padding: 0;
+  }
+  .container form {
+    padding: 6px !important;
+  }
 }

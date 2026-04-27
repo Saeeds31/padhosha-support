@@ -19,7 +19,7 @@ import Vue3PersianDatetimePicker from "vue3-persian-datetime-picker";
 import "@boindil/vue-file-agent-next/dist/vue-file-agent-next.css";
 // api.padhosha.ir
 // 127.0.0.1:8000
-axios.defaults.baseURL = "http://api.padhosha.ir/api/v1/admin";
+axios.defaults.baseURL = "http://api.padhosha.ir/api/v1/employer";
 window.baseImageAddress = "http://api.padhosha.ir/storage_public/";
 const app = createApp(App);
 // app.use(CKEditor)

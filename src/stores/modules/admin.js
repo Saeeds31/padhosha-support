@@ -33,7 +33,7 @@ export const useAdmin = defineStore("admin", {
     async getAdminDetail() {
       this.loader = true;
       try {
-        const { data } = await axios.get("/admin-info");
+        const { data } = await axios.get("/info");
         this.admin = data.user;
         this.permissions = data.permissions;
       } catch (e) {

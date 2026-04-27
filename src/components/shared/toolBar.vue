@@ -1,6 +1,8 @@
 <template>
   <b-navbar id="mainNavbar" variant="light" class="bg-white border-bottom px-3">
-    <b-navbar-brand href="#">Admin Panel</b-navbar-brand>
+    <b-navbar-brand href="#">
+      {{ employer ? employer.full_name : 'پنل مشتری' }}
+    </b-navbar-brand>
 
     <b-navbar-nav class=" d-flex align-items-center gap-2">
       <!-- دکمه‌های اضافی -->
@@ -93,7 +95,9 @@ const router = useRouter()
 const store = useAdmin()
 
 const modalShow = ref(false)
-
+let employer = computed(() => {
+  return store.getAdmin
+})
 // داده‌های اعلان
 const notifications = computed(() => store.notifications || [])
 

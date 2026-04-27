@@ -7,10 +7,14 @@
         <!-- Username -->
         <b-form-group label-for="username">
           <div class="input-group mb-3">
-            <b-form-input id="username" name="mobile" v-model="username" placeholder="Username" required></b-form-input>
+            <b-form-input id="username" name="mobile" type="tel" v-model="username" placeholder="Username"
+              required></b-form-input>
             <span @click="sendOtp()" :class="{ 'disableButton': counter != 0 }"
               class="input-group-text bg-primary text-white">
-              <i v-if="counter <= 0" class="bi-send"></i>
+              <span class="d-flex align-items-center gap-2" v-if="counter <= 0">
+                <i class="bi-send"></i>
+                <b>ارسال کد</b>
+              </span>
               <span v-else>{{ counter }}</span>
             </span>
           </div>
@@ -67,7 +71,7 @@ function handleLogin() {
   let fd = new FormData();
   fd.append("mobile", username.value)
   fd.append("token", otp.value)
-  axios.post("/login-verify", fd).then(res => {
+  axios.post("/login", fd).then(res => {
     toast.success("ورود موفقیت  آمیز بود! 🎉")
     axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
     message.value = '';
@@ -81,17 +85,23 @@ function handleLogin() {
 
   })
 }
-function sendOtp() {
+let loader = ref(false);
+async function sendOtp() {
+  if (loader.value) return;
+  loader.value = true;
   counter.value = -1;
   let fd = new FormData();
   fd.append("mobile", username.value);
-  axios.post("/send-token", fd).then((res) => {
+  try {
+    let { data } = await axios.post("/send-token", fd)
     toast.success("کد یکبار مصرف برای شما ارسال شد! ")
     showTimer();
-  }).catch((err) => {
-    counter.value = 0;
+  } catch (error) {
     toast.error(err.response?.data?.message)
-  })
+  } finally {
+    loader.value = false;
+
+  }
 }
 let timer = null;
 function showTimer() {
@@ -112,6 +122,13 @@ function showTimer() {
   border-radius: 15px;
   padding: 2rem;
   background: #ffffffee;
+}
+
+@media (max-width:580px) {
+
+  .login-card {
+    width: 96%;
+  }
 }
 
 .input-group-text {
