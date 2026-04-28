@@ -5,7 +5,7 @@
     <div class="sidebar d-flex flex-column bg-light" :class="{ 'sidebar-open': mobileOpen }">
       <!-- Logo -->
       <router-link to="/dashboard" class="p-3 d-flex justify-content-center border-bottom">
-        <img v-if="employer" :src="findLogo(employer.employer.bussines_logo)" />
+        <img width="250" v-if="employer" :src="findLogo(employer.employer.bussines_logo)" />
       </router-link>
       <div class="w-100 employerMenu">
         <template v-for="item in menuItems" :key="item.name">

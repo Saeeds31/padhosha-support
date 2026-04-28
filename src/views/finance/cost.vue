@@ -2,12 +2,17 @@
   <div id="financial-page" class="container mt-4">
     <!-- بخش فیلتر جدول -->
     <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h3>
+      <div class="card-header costHeader d-flex justify-content-between align-items-center">
+        <h3 class="fy">
           فیلتر اطلاعات مالی
-
         </h3>
-        <h4>جمع کل بدهی (تومان): <span class="text-danger">{{ formatCurrency(Number(mainData.total)) }}</span></h4>
+        <h4>
+          <span class="fy">
+            جمع کل بدهی (تومان):
+          </span>
+          <span class="text-dark">{{ formatCurrency(Number(mainData.total)) }}</span>
+        </h4>
+
 
       </div>
       <div class="card-body">
@@ -174,5 +179,18 @@ function resetFilters() {
 
 .page-link {
   cursor: pointer;
+}
+
+@media (max-width:991px) {
+  .costHeader h3 {
+    display: none;
+  }
+
+  .costHeader h4 {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    width: 100%;
+  }
 }
 </style>

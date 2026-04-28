@@ -5,6 +5,7 @@ import axios from "axios";
 import { getCookie } from "./tools/methods.js";
 import { useRouter, useRoute } from "vue-router"
 import { useAdmin } from '@/stores/modules/admin';
+import MobileFooter from './components/shared/mobileFooter.vue';
 const router = useRouter();
 const route = useRoute();
 const store = useAdmin();
@@ -34,24 +35,7 @@ axios.interceptors.response.use(
       <router-view></router-view>
     </div>
   </div>
-  <footer v-if="route.path != '/login'">
-    <router-link to="/dashboard">
-      <i class="bi bi-info-circle"></i>
-      <span>خانه</span>
-    </router-link>
-    <router-link to="/ticket">
-      <i class="bi bi-ticket"></i>
-      <span>تیکت</span>
-    </router-link>
-    <router-link to="/deposit">
-      <i class="bi bi-table"></i>
-      <span>پرداختی</span>
-    </router-link>
-    <router-link to="/cost">
-      <i class="bi bi-receipt"></i>
-      <span>هزینه</span>
-    </router-link>
-  </footer>
+  <MobileFooter></MobileFooter>
 </template>
 
 <style>

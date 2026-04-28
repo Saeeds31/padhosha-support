@@ -2,13 +2,18 @@
   <div id="financial-page" class="container mt-4">
     <!-- بخش بالایی: جمع بدهی، جمع پرداختی، دکمه افزودن رسید -->
     <div class="card mb-3">
-      <div class="card-body row mb-4 d-flex justify-content-between align-items-center">
+      <div class="card-body row  d-flex justify-content-between align-items-center">
 
         <div class="col-md-4">
-          <h4>جمع کل پرداختی: <span class="text-success" v-if="mainData.total">{{ formatCurrency(Number(mainData.total))
-          }}</span></h4>
+          <h4 class="depositHeader">
+            <span class="fy">
+              جمع کل پرداختی:
+            </span>
+            <span class="text-dark">{{ formatCurrency(Number(mainData.total))
+            }}</span>
+          </h4>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="col-md-4 text-end addDeposit">
           <button class="btn btn-primary" @click="showAddReceiptModal = true">
             <i class="bi bi-receipt-fill me-2"></i> افزودن رسید پرداخت
           </button>
@@ -322,5 +327,19 @@ async function getData(query = {}) {
 
 #reciptModal {
   background-color: white;
+}
+
+@media (max-width:991px) {
+  .depositHeader {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .addDeposit {
+    display: flex;
+    justify-content: start;
+    margin-top: 24px;
+  }
+
 }
 </style>

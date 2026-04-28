@@ -5,7 +5,7 @@
 
                 <!-- عنوان تیکت -->
                 <b-form-group label="موضوع تیکت" label-for="subject">
-                    <b-form-input id="subject" v-model="ticket.title"  placeholder="موضوع را وارد کنید" />
+                    <b-form-input id="subject" v-model="ticket.title" placeholder="موضوع را وارد کنید" />
                     <small class="text-danger" v-if="errors.title">{{ errors.title[0] }}</small>
                 </b-form-group>
 
@@ -23,7 +23,7 @@
                 </b-form-group>
 
                 <!-- ضبط صوت -->
-                <b-form-group label="ضبط وویس (اختیاری)">
+                <b-form-group v-if="false" label="ضبط وویس (اختیاری)">
                     <div class="d-flex align-items-center gap-2">
                         <b-button variant="outline-primary" @click="toggleRecording">
                             <span v-if="!isRecording">🎙️ شروع ضبط</span>
@@ -96,8 +96,8 @@ const handleSubmit = async () => {
     const formData = new FormData()
     formData.append('title', ticket.value.title)
     formData.append('description', ticket.value.description)
-    formData.append('file', ticket.value.file??'')
-     formData.append('voice', ticket.value.audio??'')
+    formData.append('file', ticket.value.file ?? '')
+    formData.append('voice', ticket.value.audio ?? '')
     try {
         loader.value = true;
         let { data } = await axios.post('tickets', formData);

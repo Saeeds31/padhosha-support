@@ -4,21 +4,43 @@
     <div class="row mb-4 align-items-center card-summary p-3 ticketInfo">
       <div class="col-md-3 text-center">
         <!-- آیکن برای کل تیکت‌ها -->
-        <h5 class=""><i class="bi bi-ticket-fill me-2 text-primary"></i> کل تیکت‌ها: <b class="text-primary"
-            v-if="mainData.data">{{
-              mainData.data.total }}</b></h5>
+        <h5 class="">
+          <span>
+            <i class="bi bi-ticket-fill me-2 text-dark"></i>
+            <span class="fy">
+            </span>
+            کل تیکت‌ها:
+          </span>
+          <b class="text-dark" v-if="mainData.data">{{
+            mainData.data.total }}</b>
+        </h5>
       </div>
       <div class="col-md-3 text-center">
         <!-- آیکن برای تیکت‌های باز -->
-        <h5><i class="bi bi-exclamation-circle-fill me-2 text-warning"></i> تیکت‌های باز: <b class="text-warning">{{
-          mainData.openedTotal }}</b></h5>
+        <h5>
+          <span>
+            <i class="bi bi-exclamation-circle-fill me-2 text-dark"></i>
+            <span class="fy">
+              تیکت‌های باز:
+            </span>
+          </span>
+          <b class="text-dark">{{
+            mainData.openedTotal }}</b>
+        </h5>
       </div>
       <div class="col-md-3 text-center">
         <!-- آیکن برای تیکت‌های بسته -->
-        <h5><i class="bi bi-check-circle-fill me-2 text-secondary"></i> تیکت‌های بسته: <b class="text-secondary">{{
+        <h5>
+          <span>
+            <i class="bi bi-check-circle-fill me-2 text-dark"></i>
+            <span class="fy">
+              تیکت‌های بسته:
+            </span>
+          </span>
+          <b class="text-dark">{{
           mainData.closedTotal }}</b></h5>
       </div>
-      <div class="col-md-3 text-end">
+      <div class="col-md-3 text-end addTicketBox">
         <!-- دکمه افزودن تیکت با آیکن -->
         <router-link to="/ticket/add" class="btn btn-success">
           <i class="bi bi-plus-circle-fill me-2"></i> افزودن تیکت جدید
@@ -242,7 +264,11 @@ function resetFilters() {
   }
 
   .card-summary h5 {
-    justify-content: start !important;
+    justify-content: space-between !important;
+  }
+  .addTicketBox{
+    display: flex;
+    justify-content: start;
   }
 }
 </style>
