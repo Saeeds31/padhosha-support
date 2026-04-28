@@ -35,7 +35,7 @@ axios.interceptors.response.use(
       <router-view></router-view>
     </div>
   </div>
-  <MobileFooter></MobileFooter>
+  <MobileFooter v-if="route.path != '/login'"></MobileFooter>
 </template>
 
 <style>
