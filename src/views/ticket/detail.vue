@@ -15,8 +15,7 @@
                         <span>آخرین بروز رسانی: </span>
                         <b>
                             {{ mainData.messages.length ? new
-                                Date(mainData.messages[mainData.messages.length -
-                                    1].created_at).toLocaleDateString('fa') : "-" }}
+                                Date(mainData.messages[0].created_at).toLocaleDateString('fa') : "-" }}
                         </b>
                     </h5>
 
