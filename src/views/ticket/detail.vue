@@ -142,7 +142,7 @@
 
                                     <div class="attachments mt-2">
                                         <template v-if="msg.attachment">
-                                            <b-link :href="fileHandler(msg.attachment)" target="_blank">
+                                            <b-link :href="fileHandler(msg.attachment)" :class="msg.sender_side == 'employer' ? ' text-white' : 'text-muted'" target="_blank">
                                                 مشاهده فایل الصاق شده
                                             </b-link>
                                         </template>
