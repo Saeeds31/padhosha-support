@@ -10,10 +10,12 @@
             <b-form-input id="username" name="mobile" type="tel" v-model="username" placeholder="Username"
               required></b-form-input>
             <span @click="sendOtp()" :class="{ 'disableButton': counter != 0 }"
-              class="input-group-text bg-primary text-white">
-              <span class="d-flex align-items-center gap-2" v-if="counter <= 0">
+              class="input-group-text  bg-primary text-white">
+              <span class="d-flex align-items-center gap-2"  v-if="counter <= 0">
                 <i class="bi-send"></i>
-                <b>ارسال کد</b>
+                <b>
+                  {{ loader?'منتظرباشید':'ارسال کد' }}
+                </b>
               </span>
               <span v-else>{{ counter }}</span>
             </span>
@@ -97,7 +99,7 @@ async function sendOtp() {
     toast.success("کد یکبار مصرف برای شما ارسال شد! ")
     showTimer();
   } catch (error) {
-    toast.error(err.response?.data?.message)
+    toast.error(error.response?.data?.message)
   } finally {
     loader.value = false;
 
