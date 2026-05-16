@@ -31,7 +31,7 @@ axios.interceptors.response.use(
 <template>
   <div class=" mainpage-container d-flex w-100">
     <Sidebar v-if="route.path != '/login'" />
-    <div class="flex-grow-1" id="mainContent">
+    <div class="flex-grow-1" :id="route.path != '/login' ? 'mainContent' : ''">
       <router-view></router-view>
     </div>
   </div>
