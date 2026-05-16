@@ -134,7 +134,7 @@ let loader = ref(false);
 async function sendOtp() {
   if (loader.value) return;
   loader.value = true;
-  counter.value = -1;
+  counter.value = 0;
   let fd = new FormData();
   fd.append("mobile", username.value);
   try {
@@ -142,6 +142,7 @@ async function sendOtp() {
     toast.success("کد یکبار مصرف برای شما ارسال شد! ")
     showTimer();
   } catch (error) {
+    loader.value = false;
     toast.error(error.response?.data?.message)
   } finally {
     loader.value = false;
