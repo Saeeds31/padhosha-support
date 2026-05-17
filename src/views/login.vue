@@ -24,21 +24,10 @@
           <div class="input-otp-group">
             <label class="input-label">شماره موبایل</label>
             <div class="mobile-input-wrapper">
-              <b-form-input
-                id="username"
-                v-model="username"
-                type="tel"
-                placeholder="09123456789"
-                class="mobile-input"
-                required
-              ></b-form-input>
-              <button
-                type="button"
-                @click="sendOtp()"
-                :disabled="counter != 0 || loader"
-                class="send-otp-btn"
-                :class="{ 'btn-disabled': counter != 0 }"
-              >
+              <b-form-input id="username" v-model="username" type="tel" placeholder="09123456789" class="mobile-input"
+                required></b-form-input>
+              <button type="button" @click="sendOtp()" :disabled="counter != 0 || loader" class="send-otp-btn"
+                :class="{ 'btn-disabled': counter != 0 }">
                 <span v-if="counter <= 0">
                   <i class="bi bi-envelope-paper-fill"></i>
                   <span>{{ loader ? 'منتظر...' : 'ارسال کد' }}</span>
@@ -51,15 +40,8 @@
           <!-- کد یکبار مصرف -->
           <div class="input-otp-group">
             <label class="input-label">کد یکبار مصرف</label>
-            <v-otp-input
-              ref="otpInput"
-              input-classes="otp-input-modern"
-              inputmode="tel"
-              separator="-"
-              inputType="letter-numeric"
-              :num-inputs="6"
-              v-model:value="otp"
-            />
+            <v-otp-input ref="otpInput" input-classes="otp-input-modern" inputmode="tel" separator="-"
+              inputType="letter-numeric" :num-inputs="6" v-model:value="otp" />
           </div>
 
           <!-- دکمه ورود -->
@@ -465,5 +447,10 @@ function showTimer() {
     font-size: 0.7rem;
     padding: 4px 14px;
   }
+}
+</style>
+<style>
+.otp-input-container {
+  direction: ltr;
 }
 </style>
