@@ -235,6 +235,7 @@ const translater = (status) => {
         case 'closed': return 'بسته شده';
         case 'pending': return 'در انتظار بررسی';
         case 'awaiting_payment': return 'در انتظار پرداخت';
+        case 'awaiting_response': return 'در انتظار پاسخ کارفرما';
         case 'referred': return 'ارجاع شده';
     }
 };
