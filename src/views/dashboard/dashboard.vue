@@ -1,298 +1,491 @@
 <template>
-    <b-container fluid class="py-4">
-        <div class="employer-dashboard">
-            <!-- عنوان صفحه -->
-            <b-row class="mb-4 align-items-center">
-                <b-col>
-                    <h3 class="yekanf mb-0">داشبورد کارفرما</h3>
-                    <small class="yekanf  text-muted">خلاصه وضعیت همکاری، مالی و تیکت‌ها</small>
-                </b-col>
-            </b-row>
+  <div class="dashboard-page">
+    <!-- Header خوش‌آمدگویی -->
+    <div class="dashboard-header">
+      <div>
+        <h1 class="page-title">داشبورد</h1>
+        <p class="page-subtitle">خلاصه وضعیت همکاری و مالی شما</p>
+      </div>
+      <div class="header-actions">
+        <span class="date-badge">
+          <i class="bi bi-calendar3"></i>
+          {{ currentDate }}
+        </span>
+      </div>
+    </div>
 
-            <!-- ردیف ۱: اطلاعات همکاری -->
-            <b-row>
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-primary text-white">
-                            <i class="fas fa-handshake"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">استارت همکاری</div>
-                            <div class="stat-value"> {{ dashboard.subscription ? new
-                                Date(dashboard.subscription.start_date).toLocaleDateString('fa') : 'وارد نشده' }} </div>
-                            <small v-if="dashboard.subscription && dashboard.subscription.start_date"
-                                class="text-muted">با افتخار در کنار شما هستیم</small>
-                        </div>
-                    </b-card>
-                </b-col>
-
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-warning text-white">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">انقضاء پشتیبانی</div>
-                            <div class="stat-value">
-                                {{ dashboard.subscription ? new
-                                    Date(dashboard.subscription.expiration_date).toLocaleDateString('fa') : 'وارد نشده' }}
-                            </div>
-                            <small v-if="dashboard.subscription"
-                                :class="['font-weight-bold', !dashboard.active ? 'text-danger' : 'text-success']">
-                                {{ !dashboard.active ? 'پشتیبانی منقضی شده' : 'پشتیبانی فعال' }}
-                            </small>
-                        </div>
-                    </b-card>
-                </b-col>
-
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-info text-white">
-                            <i class="fas fa-medal"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">سطح همکاری</div>
-                            <div class="stat-value">{{
-                                dashboard.subscription ? trasnlater(dashboard.subscription.level_type) : "" }}</div>
-                            <b-badge
-                                :variant="cooperationLevelVariant(dashboard.subscription ? dashboard.subscription.level_type : '')"
-                                pill>
-                                {{ dashboard.subscription ? dashboard.subscription.level_type : 'وارد نشده' }}
-                            </b-badge>
-                        </div>
-                    </b-card>
-                </b-col>
-            </b-row>
-
-            <!-- ردیف ۲: اطلاعات مالی -->
-            <b-row class="mt-2">
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-danger text-white">
-                            <i class="fas fa-exclamation-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">میزان بدهی</div>
-                            <div class="stat-value text-danger">
-                                {{ formatCurrency(dashboard.totalDebt) }}
-                            </div>
-                            <small class="text-muted">آخرین بروزرسانی:
-                                {{ new Date().toLocaleDateString('fa') }}
-                            </small>
-                        </div>
-                    </b-card>
-                </b-col>
-
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-success text-white">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">کل پرداختی</div>
-                            <div class="stat-value text-success">
-                                {{ formatCurrency(dashboard.totalPay) }}
-                            </div>
-                            <small class="text-muted">از ابتدای همکاری</small>
-                        </div>
-                    </b-card>
-                </b-col>
-
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-secondary text-white">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">پرداختی در این ماه</div>
-                            <div class="stat-value">
-                                {{ formatCurrency(dashboard.totalMonth) }}
-                            </div>
-                            <small class="text-muted">ماه جاری</small>
-                        </div>
-                    </b-card>
-                </b-col>
-            </b-row>
-
-            <!-- ردیف ۳: وضعیت تیکت‌ها -->
-            <b-row class="mt-2">
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-dark text-white">
-                            <i class="fas fa-ticket-alt"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">تعداد تیکت</div>
-                            <div class="stat-value">
-                                {{ dashboard.ticket ? dashboard.ticket.totalTicket : '' }}
-                            </div>
-                            <small class="text-muted">کل تیکت‌های ثبت‌شده</small>
-                        </div>
-                    </b-card>
-                </b-col>
-
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-primary text-white">
-                            <i class="fas fa-envelope-open-text"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">تیکت‌های باز</div>
-                            <div class="stat-value text-warning">
-                                {{ dashboard.ticket ? dashboard.ticket.openTicket : '' }}
-                            </div>
-                            <small class="text-muted">در انتظار پاسخ/پیگیری</small>
-                        </div>
-                    </b-card>
-                </b-col>
-
-                <b-col cols="12" md="4" class="mb-3">
-                    <b-card class="stat-card" body-class="d-flex align-items-center">
-                        <div class="stat-icon bg-success text-white">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-title">تیکت‌های بسته شده</div>
-                            <div class="stat-value text-success">
-                                {{ dashboard.ticket ? dashboard.ticket.closeTicket : '' }}
-                            </div>
-                        </div>
-                    </b-card>
-                </b-col>
-            </b-row>
+    <!-- کارت‌های آماری -->
+    <div class="stats-grid">
+      <!-- کارت همکاری -->
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background: var(--primary-gradient)">
+          <i class="bi bi-handshake"></i>
         </div>
+        <div class="stat-card-content">
+          <span class="stat-label">استارت همکاری</span>
+          <span class="stat-value">{{ startDate }}</span>
+          <span class="stat-sub">با افتخار در کنار شما</span>
+        </div>
+      </div>
 
-    </b-container>
+      <!-- کارت انقضا -->
+      <div class="stat-card" :class="{ 'expired': !dashboard.active }">
+        <div class="stat-card-icon" :style="{ background: dashboard.active ? 'linear-gradient(135deg, #10b981, #34d399)' : 'linear-gradient(135deg, #ef4444, #f87171)' }">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-label">انقضاء پشتیبانی</span>
+          <span class="stat-value">{{ expirationDate }}</span>
+          <span class="stat-sub" :class="{ 'text-danger': !dashboard.active, 'text-success': dashboard.active }">
+            {{ dashboard.active ? '✅ فعال' : '❌ منقضی شده' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- کارت سطح -->
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa)">
+          <i class="bi bi-award"></i>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-label">سطح همکاری</span>
+          <span class="stat-value">{{ levelLabel }}</span>
+          <span class="stat-sub">{{ levelDesc }}</span>
+        </div>
+      </div>
+
+      <!-- کارت بدهی -->
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background: linear-gradient(135deg, #ef4444, #f87171)">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-label">میزان بدهی</span>
+          <span class="stat-value text-danger">{{ formatCurrency(dashboard.totalDebt) }}</span>
+          <span class="stat-sub">آخرین بروزرسانی: امروز</span>
+        </div>
+      </div>
+
+      <!-- کارت کل پرداختی -->
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background: linear-gradient(135deg, #10b981, #34d399)">
+          <i class="bi bi-coins"></i>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-label">کل پرداختی</span>
+          <span class="stat-value text-success">{{ formatCurrency(dashboard.totalPay) }}</span>
+          <span class="stat-sub">از ابتدای همکاری</span>
+        </div>
+      </div>
+
+      <!-- کارت پرداختی ماه -->
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24)">
+          <i class="bi bi-calendar2-week"></i>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-label">پرداختی این ماه</span>
+          <span class="stat-value text-warning">{{ formatCurrency(dashboard.totalMonth) }}</span>
+          <span class="stat-sub">ماه جاری</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- بخش تیکت‌ها -->
+    <div class="ticket-section">
+      <div class="section-header">
+        <h3><i class="bi bi-ticket-detailed"></i> وضعیت تیکت‌ها</h3>
+        <router-link to="/ticket" class="view-all">مشاهده همه <i class="bi bi-chevron-left"></i></router-link>
+      </div>
+      <div class="ticket-stats">
+        <div class="ticket-stat">
+          <span class="ticket-number">{{ dashboard.ticket?.totalTicket || 0 }}</span>
+          <span class="ticket-label">کل تیکت‌ها</span>
+        </div>
+        <div class="ticket-stat">
+          <span class="ticket-number" style="color: #f59e0b">{{ dashboard.ticket?.openTicket || 0 }}</span>
+          <span class="ticket-label">باز</span>
+        </div>
+        <div class="ticket-stat">
+          <span class="ticket-number" style="color: #10b981">{{ dashboard.ticket?.closeTicket || 0 }}</span>
+          <span class="ticket-label">بسته شده</span>
+        </div>
+        <div class="ticket-stat">
+          <span class="ticket-number" style="color: #8b5cf6">{{ dashboard.ticket?.totalTicket || 0 }}</span>
+          <span class="ticket-label">در حال پیگیری</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- اقدامات سریع -->
+    <div class="quick-actions">
+      <h3 class="section-title"><i class="bi bi-lightning-fill"></i> اقدامات سریع</h3>
+      <div class="actions-grid">
+        <router-link to="/ticket/add" class="action-btn">
+          <i class="bi bi-plus-circle"></i>
+          <span>تیکت جدید</span>
+        </router-link>
+        <router-link to="/deposit" class="action-btn">
+          <i class="bi bi-wallet"></i>
+          <span>پرداخت</span>
+        </router-link>
+        <router-link to="/cost" class="action-btn">
+          <i class="bi bi-receipt"></i>
+          <span>مشاهده هزینه‌ها</span>
+        </router-link>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useAdmin } from '@/stores/modules/admin';
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+
 const store = useAdmin();
-const router = useRouter()
-let dashboard = ref({})
-// دریافت داده از API
+const router = useRouter();
+const dashboard = ref({});
+
+const currentDate = computed(() => {
+  return new Date().toLocaleDateString('fa-IR', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+});
+
+const startDate = computed(() => {
+  if (dashboard.value.subscription?.start_date) {
+    return new Date(dashboard.value.subscription.start_date).toLocaleDateString('fa-IR');
+  }
+  return 'وارد نشده';
+});
+
+const expirationDate = computed(() => {
+  if (dashboard.value.subscription?.expiration_date) {
+    return new Date(dashboard.value.subscription.expiration_date).toLocaleDateString('fa-IR');
+  }
+  return 'وارد نشده';
+});
+
+const levelLabel = computed(() => {
+  const levels = {
+    bronze: '🥉 برنز',
+    silver: '🥈 نقره‌ای',
+    gold: '🥇 طلا',
+    diamond: '💎 الماس'
+  };
+  const level = dashboard.value.subscription?.level_type || 'bronze';
+  return levels[level] || 'برنز';
+});
+
+const levelDesc = computed(() => {
+  const descs = {
+    bronze: 'سطح پایه',
+    silver: 'سطح متوسط',
+    gold: 'سطح پیشرفته',
+    diamond: 'سطح ویژه'
+  };
+  const level = dashboard.value.subscription?.level_type || 'bronze';
+  return descs[level] || 'سطح پایه';
+});
+
+function formatCurrency(value) {
+  if (value == null) return "-";
+  return value.toLocaleString("fa-IR") + " تومان";
+}
+
 onMounted(async () => {
+  try {
     const { data } = await axios.get("/dashboard");
     dashboard.value = data;
+    
     if (!dashboard.value.active) {
-        Swal.fire("متوجه شدم", "تاریخ پشتیبانی شما به انتها رسیده است لطفا برای استفاده مجدد از سیستم با پشتیبانی تماس بگیرید", "success");
-        router.push('/login')
+      Swal.fire({
+        icon: 'warning',
+        title: 'پشتیبانی منقضی شده',
+        text: 'تاریخ پشتیبانی شما به انتها رسیده است، لطفاً با پشتیبانی تماس بگیرید.',
+        confirmButtonColor: '#0037ff',
+      });
+      router.push('/login');
     }
+  } catch (error) {
+    console.error("Error loading dashboard:", error);
+  }
 });
-function formatCurrency(value) {
-    if (value == null) return "-";
-    return value.toLocaleString("fa-IR") + " تومان";
-}
-function trasnlater(level_type) {
-    if (level_type == 'silver') {
-        return "نقره ای"
-    } else if (level_type == 'bronze') {
-        return "برنز"
-    } else if (level_type == 'gold') {
-        return "طلا"
-    } else {
-        return "الماس"
-    }
-}
-function cooperationLevelVariant(level_type) {
-    switch (level_type) {
-        case "gold":
-            return "warning";
-        case "silver":
-            return "info";
-        case "bronze":
-            return "secondary";
-        default:
-            return "error";
-    }
-}
 </script>
 
 <style scoped>
-.employer-dashboard {
-    direction: rtl;
+.dashboard-page {
+  direction: rtl;
 }
 
-/* کارت‌ها */
+/* ===== Header ===== */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 4px 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #8888aa;
+  margin: 0;
+}
+
+.date-badge {
+  background: white;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: #4a4a6a;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.date-badge i {
+  color: var(--primary);
+}
+
+/* ===== Stats Grid ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
 .stat-card {
-    border-radius: 12px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
-    border: 1px solid #f0f0f0;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: white;
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+  border: 1px solid rgba(0, 55, 255, 0.04);
 }
 
 .stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.07);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
-/* آیکون‌ها */
-.stat-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 12px;
-    font-size: 20px;
-    flex-shrink: 0;
+.stat-card.expired {
+  border-color: #fca5a5;
+  background: #fef2f2;
 }
 
-/* متن داخل کارت */
-.stat-content {
-    flex: 1;
+.stat-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  flex-shrink: 0;
 }
 
-.stat-title {
-    font-size: 0.85rem;
-    color: #6c757d;
+.stat-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8888aa;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: block;
 }
 
 .stat-value {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 4px;
-    margin-bottom: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  display: block;
+  margin: 2px 0;
 }
 
-h5 {
-    font-size: 1rem;
-    font-weight: 600;
+.stat-sub {
+  font-size: 11px;
+  color: #aaa;
 }
 
-.small {
-    font-size: 0.85rem;
-    border-bottom: 1px solid #1213;
-    padding-bottom: 8px;
+.text-success { color: #10b981 !important; }
+.text-danger { color: #ef4444 !important; }
+.text-warning { color: #f59e0b !important; }
+
+/* ===== Ticket Section ===== */
+.ticket-section {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 28px;
+  border: 1px solid rgba(0, 55, 255, 0.04);
 }
 
-.dashboardItem strong {
-    width: 100%;
-    min-height: 40px;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
-.dashboardItem .small {
-    background-color: var(--theme-color);
-    color: white !important;
-    width: 100%;
-    padding: 8px 0;
+.section-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.dashboardItem {
-    border: 1px solid #1213;
-    border-radius: 8px;
-    min-height: 100px;
-    display: flex;
+.view-all {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+.ticket-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.ticket-stat {
+  background: #f8faff;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.ticket-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  display: block;
+}
+
+.ticket-label {
+  font-size: 12px;
+  color: #8888aa;
+}
+
+/* ===== Quick Actions ===== */
+.quick-actions {
+  margin-top: 4px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.action-btn {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #4a4a6a;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+  border: 1px solid rgba(0, 55, 255, 0.04);
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.action-btn i {
+  font-size: 24px;
+  color: var(--primary);
+}
+
+.action-btn span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 576px) {
+  .dashboard-header {
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 0 5px #1213;
-    padding: 0;
-    overflow: hidden;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .stat-card {
+    padding: 14px 16px;
+  }
+  
+  .ticket-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .page-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

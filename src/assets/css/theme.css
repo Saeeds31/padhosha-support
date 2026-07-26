@@ -1,0 +1,98 @@
+/* ===== Theme Overrides ===== */
+:root {
+  --primary: #0037ff;
+  --primary-dark: #0029c4;
+  --primary-light: #e8edff;
+  --primary-gradient: linear-gradient(135deg, #0037ff, #0055ff);
+  --shadow-sm: 0 2px 12px rgba(0, 55, 255, 0.08);
+  --shadow-md: 0 8px 30px rgba(0, 55, 255, 0.12);
+  --shadow-lg: 0 16px 48px rgba(0, 55, 255, 0.18);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+/* ===== Toast Override ===== */
+.Vue-Toastification__toast {
+  font-family: 'yekanbakhbold', sans-serif;
+  border-radius: var(--radius-sm) !important;
+}
+
+.Vue-Toastification__toast--success {
+  background: #10b981 !important;
+}
+
+.Vue-Toastification__toast--error {
+  background: #ef4444 !important;
+}
+
+/* ===== Button Override ===== */
+.btn-primary {
+  background: var(--primary-gradient) !important;
+  border: none !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 16px rgba(0, 55, 255, 0.25) !important;
+  transition: all 0.25s ease !important;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 55, 255, 0.35) !important;
+}
+
+/* ===== Form Override ===== */
+.form-control,
+.form-select {
+  border-radius: var(--radius-sm) !important;
+  border: 1.5px solid #e2e8f0 !important;
+  padding: 10px 16px !important;
+  transition: all 0.25s ease !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px rgba(0, 55, 255, 0.1) !important;
+}
+
+/* ===== Card Override ===== */
+.card {
+  border-radius: var(--radius) !important;
+  border: 1px solid rgba(0, 55, 255, 0.04) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all 0.25s ease !important;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ===== Badge Override ===== */
+.badge {
+  border-radius: 20px !important;
+  padding: 4px 12px !important;
+  font-weight: 600 !important;
+}
+
+/* ===== Table Override ===== */
+.table {
+  border-radius: var(--radius) !important;
+  overflow: hidden !important;
+}
+
+.table thead th {
+  background: #f8faff !important;
+  border-bottom: 2px solid rgba(0, 55, 255, 0.08) !important;
+  color: #4a4a6a !important;
+  font-weight: 600 !important;
+  padding: 12px 16px !important;
+}
+
+.table tbody td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid rgba(0, 55, 255, 0.04) !important;
+}
+input{
+  color: black !important;
+}
